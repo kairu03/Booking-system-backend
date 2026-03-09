@@ -33,3 +33,4 @@ export const protectRoute = asyncHandler(async (req, res, next) => {
   // call next() to continue to route
   next();
 });
+

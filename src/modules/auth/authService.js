@@ -3,7 +3,7 @@ import User from "../users/userModel.js";
 import bcrypt from "bcryptjs";
 import jwt from 'jsonwebtoken';
 
-export const registerUser = async ({ name, email, password }) => {
+export const userRegister = async ({ name, email, password }) => {
 
   // check if user's email already exists in DB
   const userExists = await User.findOne({ email });
@@ -22,11 +22,10 @@ export const registerUser = async ({ name, email, password }) => {
   const token = jwt.sign(
     { id: newUser._id, role: newUser.role },
     process.env.JWT_SECRET,
-    { expiresIn: '1h' }
+    { expiresIn: '1d' }
   );
 
   return {
-    message: 'Register successful',
     user: {
       id: newUser._id,
       name: newUser.name,
@@ -38,7 +37,7 @@ export const registerUser = async ({ name, email, password }) => {
 }
 
 
-export const loginUser = async ({ email, password }) => {
+export const userLogin = async ({ email, password }) => {
 
   // check if user's email already exists in DB
   const user = await User.findOne({ email }).select('+password');
@@ -56,11 +55,10 @@ export const loginUser = async ({ email, password }) => {
   const token = jwt.sign(
     { id: user._id, role: user.role },
     process.env.JWT_SECRET,
-    { expiresIn: '1h' }
+    { expiresIn: '1d' }
   );
 
   return {
-    message: 'Login successful',
     user: {
       id: user._id,
       name: user.name,

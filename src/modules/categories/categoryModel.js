@@ -11,7 +11,6 @@ export const categorySchema = new mongoose.Schema({
 
   slug: {
     type: String,
-    required: true,
     unique: true,
     trim: true,
     lowercase: true
@@ -29,6 +28,12 @@ export const categorySchema = new mongoose.Schema({
   isActive: {
     type: Boolean,
     default: true
+  },
+
+  user: {
+    type: mongoose.Types.ObjectId,
+    required: true,
+    ref: 'user'
   }
 }, { timestamps: true });
 

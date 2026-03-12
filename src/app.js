@@ -2,7 +2,8 @@ import express from "express";
 import dotenv from 'dotenv';
 import helmet from "helmet";
 
-import authRoutes from './modules/auth/authRoutes.js'
+import authRoutes from './modules/auth/authRoutes.js';
+import categoryRoutes from './modules/categories/categoryRoutes.js';
 import { errorHandler } from "./middlewares/errorHandler.js";
 
 // load environment variables
@@ -23,6 +24,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/api/auth', authRoutes);
+app.use('/api/categories', categoryRoutes)
 
 app.use(errorHandler);
 

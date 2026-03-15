@@ -1,5 +1,5 @@
 import { ApiError } from '../../utils/apiError.js';
-import Resource from "./resourceModel";
+import Resource from "./resourceModel.js";
 import Category from '../categories/categoryModel.js';
 
 
@@ -83,14 +83,14 @@ export const deleteResource = async (resourceId, userId) => {
     throw new ApiError('Resource not found', 404);
   }
 
-  const category = await Resource.findById(resource.category);
+  const category = await Category.findById(resource.category);
 
   if (!category) {
     throw new ApiError('Category not found', 404);
   }
 
   if (!category.user.equals(userId)) {
-    throw new ApiError('Not authorized', 403);
+    throw new ApiError('Not authorized', 403)
   }
 
   const deletedResource = await Resource.findByIdAndDelete(resourceId);

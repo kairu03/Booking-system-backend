@@ -71,7 +71,7 @@ export const updateCategory = async ({ categoryId, userId, updated }) => {
 
 
 // DELETE
-export const deleteCategory = async (categoryId) => {
+export const deleteCategory = async (categoryId, userId) => {
   const category = await Category.findById(categoryId);
 
   if (!category) {

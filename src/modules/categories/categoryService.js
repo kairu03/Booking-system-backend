@@ -43,7 +43,7 @@ export const createCategory = async ({ name, description, image, user }) => {
 }
 
 
-// PUT
+// PATCH
 export const updateCategory = async ({ categoryId, userId, updated }) => {
   const category = await Category.findById(categoryId);
 

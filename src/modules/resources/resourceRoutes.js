@@ -14,7 +14,7 @@ router.get('/:resourceId', getResourceById);
 
 router.post('/', authorizeRoles('admin'), attachCategory, createResource);
 
-router.put('/:resourceId', authorizeRoles('admin'), updateResource);
+router.patch('/:resourceId', authorizeRoles('admin'), updateResource);
 
 router.delete('/:resourceId', authorizeRoles('admin'), deleteResource);
 

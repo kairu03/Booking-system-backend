@@ -48,7 +48,7 @@ export const createCategory = asyncHandler(async (req, res) => {
 });
 
 
-// PUT
+// PATCH
 export const updateCategory = asyncHandler(async (req, res) => {
   const { categoryId } = req.params;
   const { _id: userId } = req.user;

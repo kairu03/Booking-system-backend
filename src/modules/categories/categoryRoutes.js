@@ -15,7 +15,7 @@ router.get('/:categoryId', getCategoryById);
 
 router.post('/', authorizeRoles('admin') , createCategory);
 
-router.put('/:categoryId', authorizeRoles('admin'), updateCategory);
+router.patch('/:categoryId', authorizeRoles('admin'), updateCategory);
 
 router.delete('/:categoryId', authorizeRoles('admin'), deleteCategory);
 

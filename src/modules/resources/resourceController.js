@@ -56,7 +56,7 @@ export const createResource = asyncHandler(async (req, res) => {
 });
 
 
-// PUT
+// PATCH
 export const updateResource = asyncHandler(async (req, res) => {
   const { resourceId } = req.params;
   const { _id: userId } = req.user;
@@ -72,7 +72,7 @@ export const updateResource = asyncHandler(async (req, res) => {
   });
 
   return res.status(200).json({
-    success: true,
+    success: true,  
     message: 'Resource Updated Successfully',
     data: updatedResource
   });

@@ -26,7 +26,7 @@ export const resourceSchema = new mongoose.Schema({
   pricingType: {
     type: String,
     required: true,
-    enum: [ 'day', 'hour' ]
+    enum: [ 'day', 'hourly' ]
   },
 
   amenities: [{

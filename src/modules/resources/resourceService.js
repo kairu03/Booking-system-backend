@@ -41,7 +41,7 @@ export const createResource = async ({ name, description, capacity, price, prici
 };
 
 
-// PUT
+// PATCH
 export const updateResource = async ({ resourceId, userId, updated }) => {
   const resource = await Resource.findById(resourceId);
 
@@ -69,7 +69,11 @@ export const updateResource = async ({ resourceId, userId, updated }) => {
     ...(updated.images !== undefined && { images: updated.images })
   }
 
-  const updatedResource = await Resource.findByIdAndUpdate(resourceId, updates, { new: true, runValidators: true });
+  const updatedResource = await Resource.findByIdAndUpdate(
+    resourceId, 
+    updates, 
+    { new: true, runValidators: true }
+  );
 
   return updatedResource;
 }

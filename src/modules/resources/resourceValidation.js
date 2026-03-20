@@ -1,10 +1,10 @@
 import Joi from "joi";
-import { objectId } from "../common/validators/objectId";
-import { resourceFields } from "../common/validators/resourceFields";
+import { objectId } from "../common/validators/objectId.js";
+import { resourceFields } from "../common/validators/resourceFields.js";
 
 // for req.params - GET ResourceById && PATCH && DELETE
 export const resourceParamsSchema = Joi.object({
-  resourceId: objectId.string().length(24).hex().required().messages({
+  resourceId: objectId.required().messages({
     'any.required': 'Resource Id is required',
   })
 });

@@ -7,6 +7,7 @@ import categoryRoutes from './modules/categories/categoryRoutes.js';
 import resourceRoutes from './modules/resources/resourceRoutes.js';
 import bookingRoutes from './modules/bookings/bookingRoutes.js';
 import { errorHandler } from "./middlewares/errorHandler.js";
+import { globalLimiter } from "./middlewares/ratelimit/globalLimiter.js";
 
 // load environment variables
 dotenv.config();
@@ -19,6 +20,9 @@ app.use(helmet());
 
 // json body parser
 app.use(express.json());
+
+// global limiter
+app.use(globalLimiter);
 
 // test route
 app.get('/', (req, res) => {

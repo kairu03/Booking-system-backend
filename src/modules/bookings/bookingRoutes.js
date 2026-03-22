@@ -4,6 +4,7 @@ import { cancelBooking, createBooking, getAllBookings, getMyBookings, updateBook
 import { authorizeRoles } from "../../middlewares/role.js";
 import { validate } from "../../middlewares/validate.js";
 import { bookingParamsSchema, createBookingSchema, updateBookingSchema } from "./bookingValidation.js";
+import { cancelBookingLimiter, createBookingLimiter, updateBookingLimiter } from "../../middlewares/ratelimit/bookingLimiter.js";
 
 const router = express.Router();
 
@@ -18,18 +19,21 @@ router.get('/:bookingId',
 );
 
 router.post('/', 
+  createBookingLimiter,
   validate(createBookingSchema),
   createBooking
 );
 
 router.patch('/:bookingId', 
   authorizeRoles('admin'), 
+  updateBookingLimiter,
   validate(bookingParamsSchema, 'params'),
   validate(updateBookingSchema),
   updateBookingStatus
 );
 
 router.delete('/:bookingId', 
+  cancelBookingLimiter,
   validate(bookingParamsSchema),
   cancelBooking
 );

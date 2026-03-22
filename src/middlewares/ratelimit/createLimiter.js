@@ -1,6 +1,6 @@
 import { request } from "express";
 import { asyncHandler } from "../../utils/asyncHandler.js";
-import { redis } from "./redis.js";
+import { redis } from "../../config/redis.js";
 
 export const createLimiter = (prefix, maxRequests, windowSeconds, message, options = {}) => {
   return asyncHandler(async (req, res, next) => {

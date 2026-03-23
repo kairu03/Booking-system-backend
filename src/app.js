@@ -1,6 +1,8 @@
 import express from "express";
 import dotenv from 'dotenv';
 import helmet from "helmet";
+import ExpressMongoSanitize from "express-mongo-sanitize";
+
 
 import authRoutes from './modules/auth/authRoutes.js';
 import categoryRoutes from './modules/categories/categoryRoutes.js';
@@ -15,11 +17,20 @@ dotenv.config();
 // create server
 const app = express();
 
+// prevent exposing that i use express
+app.disable('x-powered-by');
+
 // secure HTTP headers
 app.use(helmet());
 
 // json body parser
 app.use(express.json());
+
+// sanitize requests to prevent MongoDB injection
+app.use(ExpressMongoSanitize({ replaceWith: '_' }));
+
+// enable trusting proxy headers for proper IP tracking (required for rate limiting)
+app.use('trust proxy', 1);
 
 // global limiter
 app.use(globalLimiter);

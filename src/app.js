@@ -41,7 +41,7 @@ app.use(
 app.use(ExpressMongoSanitize({ replaceWith: '_' }));
 
 // enable trusting proxy headers for proper IP tracking (required for rate limiting)
-app.use('trust proxy', 1);
+app.set('trust proxy', 1);
 
 // global limiter
 app.use(globalLimiter);

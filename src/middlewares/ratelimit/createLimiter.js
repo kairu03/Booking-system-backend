@@ -8,20 +8,20 @@ export const createLimiter = (prefix, maxRequests, windowSeconds, message, optio
     // lazy execution, use the Redis client that getRedis() created
     const redis = getRedis();
 
-    const userId = req.user.id;
+    const userId = req.user?.id;
     const ip = req.ip;
 
     // build Redis key based on options 
     const key =
-      options.useUserId && options.useIp ? `${prefix}:${userId}:${ip}`
-        : options.userId ? `${prefix}:${userId}`
+      options.useUserId && options.useIp ? `${prefix}:${userId || ip}:${ip}`
+        : options.userId ? `${prefix}:${userId || ip}`
           : options.useIp ? `${prefix}:${ip}`
             : prefix;
 
     // requests count in redis
     const requests = await redis.incr(key);
 
-    if (request === 1) {
+    if (requests === 1) {
       await redis.expire(key, windowSeconds);
     }
 

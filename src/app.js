@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import helmet from "helmet";
 import morgan from "morgan";
 import mongoSanitize from "@exortek/express-mongo-sanitize";
+import { logger } from "./config/logger.js";
 
 import authRoutes from './modules/auth/authRoutes.js';
 import categoryRoutes from './modules/categories/categoryRoutes.js';
@@ -31,7 +32,7 @@ app.use(
   morgan('combined', {
     skip: (req, res) => res.statusCode < 400,
     stream: {
-      write: (message) => loggers.info(message.trim())
+      write: (message) => logger.info(message.trim())
     }
   })
 )

@@ -1,5 +1,6 @@
 import { connectDB } from "./config/db.js";
 import app from './app.js'
+import { logger } from "./config/logger.js";
 
 const PORT = process.env.PORT || 5001;
 
@@ -8,10 +9,10 @@ const startServer = async () => {
     await connectDB();
 
     app.listen(PORT, () => {
-      console.log('Server connected to PORT', PORT);
+      logger.info(`Server connected to PORT ${PORT}`);
     })
   } catch (error) {
-    console.log('Error connecting to MongoDB: ', error.message);
+    logger.error('Error connecting to MongoDB');
     process.exit(1);
   }
 }

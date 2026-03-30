@@ -3,6 +3,7 @@ import winston, { createLogger, format, transports } from 'winston';
 const { combine, timestamp, errors, colorize, printf, json } = format;
 
 const isDev = process.env.NODE_ENV !== 'production';
+const isTest = process.env.NODE_ENV === 'test';
 
 const consoleFormat = printf(({ timestamp, level, message, stack }) => {
   return `${timestamp} ${level}: ${stack || message}`;
@@ -18,6 +19,7 @@ export const logger = createLogger({
 
   transports: [
     new transports.Console({
+      silent: isTest, // only log to console if not in test ENV
       format: isDev 
         ? combine(colorize(), consoleFormat)
         : combine(json()) 

@@ -42,7 +42,7 @@ export const createResource = async ({ name, description, capacity, price, prici
 
 
 // PATCH
-export const updateResource = async ({ resourceId, userId, updated }) => {
+export const updateResource = async ({ resourceId, updated }) => {
   const resource = await Resource.findById(resourceId);
 
   if (!resource) {
@@ -76,7 +76,7 @@ export const updateResource = async ({ resourceId, userId, updated }) => {
 
 
 // DELETE
-export const deleteResource = async (resourceId, userId) => {
+export const deleteResource = async (resourceId) => {
   const resource = await Resource.findById(resourceId);
 
   if (!resource) {

@@ -44,7 +44,7 @@ export const createCategory = async ({ name, description, image, user }) => {
 
 
 // PATCH
-export const updateCategory = async ({ categoryId, userId, updated }) => {
+export const updateCategory = async ({ categoryId, updated }) => {
   const category = await Category.findById(categoryId);
 
   if (!category) {
@@ -67,7 +67,7 @@ export const updateCategory = async ({ categoryId, userId, updated }) => {
 
 
 // DELETE
-export const deleteCategory = async (categoryId, userId) => {
+export const deleteCategory = async (categoryId) => {
   const category = await Category.findById(categoryId);
 
   if (!category) {

@@ -51,7 +51,6 @@ export const createCategory = asyncHandler(async (req, res) => {
 // PATCH
 export const updateCategory = asyncHandler(async (req, res) => {
   const { categoryId } = req.params;
-  const { _id: userId } = req.user;
 
   const { name, description, image, isActive } = req.body;
 
@@ -59,7 +58,6 @@ export const updateCategory = asyncHandler(async (req, res) => {
 
   const updatedCategory = await categoryService.updateCategory({
     categoryId,
-    userId,
     updated
   });
 
@@ -74,9 +72,8 @@ export const updateCategory = asyncHandler(async (req, res) => {
 // DELETE
 export const deleteCategory = asyncHandler(async (req, res) => {
   const { categoryId } = req.params;
-  const { _id: userId } = req.user; 
 
-  const deletedCategory = await categoryService.deleteCategory(categoryId, userId);
+  const deletedCategory = await categoryService.deleteCategory(categoryId);
 
   return res.status(200).json({
     success: true,

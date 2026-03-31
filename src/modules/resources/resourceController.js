@@ -59,7 +59,6 @@ export const createResource = asyncHandler(async (req, res) => {
 // PATCH
 export const updateResource = asyncHandler(async (req, res) => {
   const { resourceId } = req.params;
-  const { _id: userId } = req.user;
 
   const { name, description, capacity, price, pricingType, amenities, images } = req.body;
 
@@ -67,7 +66,6 @@ export const updateResource = asyncHandler(async (req, res) => {
 
   const updatedResource = await resourceService.updateResource({
     resourceId,
-    userId,
     updated
   });
 
@@ -82,9 +80,8 @@ export const updateResource = asyncHandler(async (req, res) => {
 // DELETE
 export const deleteResource = asyncHandler(async (req, res) => {
   const { resourceId } = req.params;
-  const { _id: userId } = req.user;
 
-  const deletedResource = await resourceService.deleteResource(resourceId, userId);
+  const deletedResource = await resourceService.deleteResource(resourceId);
 
   return res.status(200).json({
     success: true,

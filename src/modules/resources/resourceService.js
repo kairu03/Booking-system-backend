@@ -55,10 +55,6 @@ export const updateResource = async ({ resourceId, userId, updated }) => {
     throw new ApiError('Category not found', 404);
   }
 
-  if (!category.user.equals(userId)) {
-    throw new ApiError('Not authorized', 403)
-  }
-
   const updates = {
     ...(updated.name !== undefined && { name: updated.name }),
     ...(updated.description !== undefined && { description: updated.description }),
@@ -91,10 +87,6 @@ export const deleteResource = async (resourceId, userId) => {
 
   if (!category) {
     throw new ApiError('Category not found', 404);
-  }
-
-  if (!category.user.equals(userId)) {
-    throw new ApiError('Not authorized', 403)
   }
 
   const deletedResource = await Resource.findByIdAndDelete(resourceId);

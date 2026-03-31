@@ -51,10 +51,6 @@ export const updateCategory = async ({ categoryId, userId, updated }) => {
     throw new ApiError('Category not found', 404);
   }
 
-  if (!category.user.equals(userId)) {
-    throw new ApiError('Not authorized', 403);
-  }
-
   const updates = {
     ...(updated.name !== undefined && { name: updated.name }),
     ...(updated.description !== undefined && { description: updated.description }),
@@ -76,10 +72,6 @@ export const deleteCategory = async (categoryId, userId) => {
 
   if (!category) {
     throw new ApiError('Category not found', 404);
-  }
-
-  if (!category.user.equals(userId)) {
-    throw new ApiError('Not authorized', 403);
   }
 
   category.isActive = false;

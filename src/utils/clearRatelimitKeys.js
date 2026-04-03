@@ -5,7 +5,7 @@ const redis = getRedis();
 export const clearRatelimitKeys = async () => {
   const keys = await redis.keys('*'); // get all keys
 
-  if (keys > 0) {
+  if (keys.length > 0) {
     await redis.del(...keys); // delete all keys 
   }
 }

@@ -34,7 +34,7 @@ router.patch('/:resourceId',
 
 router.delete('/:resourceId', 
   authorizeRoles('admin'), 
-  validate(resourceParamsSchema),
+  validate(resourceParamsSchema, 'params'),
   deleteResource
 );
 

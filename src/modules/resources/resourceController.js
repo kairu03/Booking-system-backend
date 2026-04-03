@@ -3,14 +3,14 @@ import * as resourceService from '../../modules/resources/resourceService.js';
 
 
 // GET 
-export const getAllResource = asyncHandler(async (req, res) => {
+export const getAllResourceByCategory = asyncHandler(async (req, res) => {
   const { categoryId } = req.params;
 
-  const resources = await resourceService.getAllResource(categoryId);
+  const resources = await resourceService.getAllResourceByCategory(categoryId);
 
   return res.status(200).json({
     success: true,
-    message: 'All Resource Fetched Successfully',
+    message: 'All resources for the category fetched successfully',
     count: resources.length,
     data: resources
   });

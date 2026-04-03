@@ -4,7 +4,7 @@ import Category from '../categories/categoryModel.js';
 
 
 // GET 
-export const getAllResource = async (categoryId) => {
+export const getAllResourceByCategory = async (categoryId) => {
   const resources = await Resource.find({ category: categoryId, isActive: true })
 
   return resources;
@@ -89,7 +89,9 @@ export const deleteResource = async (resourceId) => {
     throw new ApiError('Category not found', 404);
   }
 
-  const deletedResource = await Resource.findByIdAndDelete(resourceId);
+  resource.isActive = false;
 
-  return deletedResource;
+  await resource.save();
+
+  return resource;
 }

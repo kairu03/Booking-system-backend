@@ -76,9 +76,7 @@ describe('Category Routes', () => {
       expect(res.body.success).toBe(true);
       expect(res.body.message).toBe('Category Created Successfully');
       expect(res.body.data).toMatchObject({
-        name: 'category1',
-        description: 'category description1',
-        image: 'http://example.com/category1.jpg'
+        ...newCategory
       });
     });
 
@@ -175,11 +173,7 @@ describe('Category Routes', () => {
       expect(res.statusCode).toBe(200);
       expect(res.body.success).toBe(true)
       expect(res.body.message).toBe('Category Fetched Successfully');
-      expect(res.body.data).toMatchObject({
-        name: 'Test Category',
-        description: 'Test Description',
-        image: 'http://example.com/test.jpg'
-      });
+      expect(res.body.data).toMatchObject(JSON.parse(JSON.stringify(category)));
     });
 
 

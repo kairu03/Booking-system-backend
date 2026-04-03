@@ -9,10 +9,9 @@ beforeAll(async () => {
   await connectDB();
 })
 
-email = `testlogin${Date.now()}@gmail.com`
-
 beforeEach(async () => {
   await User.deleteMany();
+  email = `testlogin${Date.now()}@gmail.com`
   await User.create({
     name: 'testlogin',
     email,
@@ -117,7 +116,7 @@ describe('POST /api/auth/login', () => {
         password: 'Testpassword'
       })
 
-      expect(res.statusCode).toBe(429);
-      expect(res.body.message).toBe('Too many login attempts, try again later');
+    expect(res.statusCode).toBe(429);
+    expect(res.body.message).toBe('Too many login attempts, try again later');
   });
 });

@@ -70,9 +70,9 @@ export const updateBookingStatus = asyncHandler(async (req, res) => {
 // DELETE
 export const cancelBooking = asyncHandler(async (req, res) => {
   const { bookingId } = req.params;
-  const { _id: userId } = req.user;
+  const { _id: userId, role } = req.user;
 
-  const cancelledBooking = await bookingService.cancelBooking(bookingId, userId);
+  const cancelledBooking = await bookingService.cancelBooking(bookingId, userId, role);
 
   return res.status(200).json({
     success: true,

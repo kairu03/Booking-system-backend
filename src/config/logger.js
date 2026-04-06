@@ -20,23 +20,25 @@ export const logger = createLogger({
   transports: [
     new transports.Console({
       silent: isTest, // only log to console if not in test ENV
-      format: isDev 
+      format: isDev
         ? combine(colorize(), consoleFormat)
-        : combine(json()) 
+        : combine(json())
     }),
 
-     // File transport for all logs
-    new winston.transports.File({
-      filename: 'logs/combined.log',
-      format: combine(json()) 
-    }),
+    // only add file transport for all logs if not in test ENV
+    ...(isTest ? [] : [
+      new winston.transports.File({
+        filename: 'logs/combined.log',
+        format: combine(json())
+      }),
 
-    // File transport for errors only
-    new winston.transports.File({
-      filename: 'logs/error.log',
-      level: 'error',
-      format: combine(json())
-    })
+      // File transport for errors only
+      new winston.transports.File({
+        filename: 'logs/error.log',
+        level: 'error',
+        format: combine(json())
+      })
+    ])
   ],
 
   exitOnError: false

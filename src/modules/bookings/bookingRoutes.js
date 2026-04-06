@@ -11,12 +11,9 @@ const router = express.Router();
 // add protecRoute to all routes
 router.use(protectRoute);
 
-router.get('/', authorizeRoles('admin') , getAllBookings);
+router.get('/admin', authorizeRoles('admin') , getAllBookings);
 
-router.get('/:bookingId', 
-  validate(bookingParamsSchema, 'params'),
-  getMyBookings
-);
+router.get('/', getMyBookings);
 
 router.post('/', 
   createBookingLimiter,

@@ -33,6 +33,10 @@ export const createBooking = async ({ userId, resourceId, startDate, endDate }) 
     throw new ApiError('Resource not found', 404);
   }
 
+  if (!resource.isActive) {
+    throw new ApiError('Resource is inactive', 403);
+  }
+
   const start = new Date(startDate);
   const end = new Date(endDate);
 
@@ -77,14 +81,14 @@ export const updateBookingStatus = async ({ bookingId, updatedStatus }) => {
 
 
 // DELETE
-export const cancelBooking = async (bookingId, userId) => {
+export const cancelBooking = async (bookingId, userId, role) => {
   const booking = await Booking.findById(bookingId);
 
   if (!booking) {
     throw new ApiError('Booking not found', 404);
   }
 
-  if (!booking.user.equals(userId)) {
+  if (!booking.user.equals(userId) && role !== 'admin') {
     throw new ApiError('Not authorized', 403);
   }
 

@@ -2,15 +2,16 @@ import express from "express";
 import dotenv from 'dotenv';
 import helmet from "helmet";
 import morgan from "morgan";
+import cors from 'cors';
 import mongoSanitize from "@exortek/express-mongo-sanitize";
 import { logger } from "./config/logger.js";
 
 import authRoutes from './modules/auth/authRoutes.js';
 import categoryRoutes from './modules/categories/categoryRoutes.js';
-import resourceRoutes from './modules/resources/resourceRoutes.js';
 import bookingRoutes from './modules/bookings/bookingRoutes.js';
 import { errorHandler } from "./middlewares/errorHandler.js";
 import { globalLimiter } from "./middlewares/ratelimit/globalLimiter.js";
+import { corsOptions } from "./config/cors.js";
 
 // load environment variables
 dotenv.config();
@@ -23,6 +24,9 @@ app.disable('x-powered-by');
 
 // secure HTTP headers
 app.use(helmet());
+
+// handle cross origin requests from allowed frontends
+app.use(cors(corsOptions));
 
 // json body parser
 app.use(express.json());

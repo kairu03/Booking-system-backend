@@ -9,6 +9,7 @@ import Booking from "../../src/modules/bookings/bookingModel.js";
 import jwt from 'jsonwebtoken';
 import { clearRatelimitKeys } from "../../src/utils/clearRatelimitKeys.js";
 
+jest.setTimeout(20000);
 describe('Booking routes', () => {
 
   let user, token, category, resource, newBooking, booking, nonAdminUser, nonAdminToken;

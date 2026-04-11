@@ -8,9 +8,6 @@ import { categoryParamsSchema, createCategorySchema, updateCategorySchema } from
 
 const router = express.Router();
 
-// add protecRoute to all routes
-router.use(protectRoute);
-
 router.get('/', getAllCategories);
 
 router.get('/:categoryId', 
@@ -19,12 +16,14 @@ router.get('/:categoryId',
 );
 
 router.post('/',  
+  protectRoute,
   authorizeRoles('admin'),
   validate(createCategorySchema), 
   createCategory
 );
 
 router.patch('/:categoryId',
+  protectRoute,
   authorizeRoles('admin'), 
   validate(categoryParamsSchema, 'params'),
   validate(updateCategorySchema),
@@ -32,6 +31,7 @@ router.patch('/:categoryId',
 );
 
 router.delete('/:categoryId', 
+  protectRoute,
   authorizeRoles('admin'),
   validate(categoryParamsSchema, 'params'), 
   deleteCategory);

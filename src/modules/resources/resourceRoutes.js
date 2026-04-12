@@ -8,9 +8,6 @@ import { createResourceSchema, resourceParamsSchema, updateResourceSchema } from
 
 const router = express.Router({ mergeParams: true });
 
-// add protecRoute to all routes
-router.use(protectRoute);
-
 router.get('/', getAllResourceByCategory);
 
 router.get('/:resourceId',
@@ -19,6 +16,7 @@ router.get('/:resourceId',
 );
 
 router.post('/', 
+  protectRoute,
   authorizeRoles('admin'), 
   attachCategory,
   validate(createResourceSchema),
@@ -26,6 +24,7 @@ router.post('/',
 );
 
 router.patch('/:resourceId', 
+  protectRoute,
   authorizeRoles('admin'),
   validate(resourceParamsSchema, 'params'),
   validate(updateResourceSchema),
@@ -33,6 +32,7 @@ router.patch('/:resourceId',
 );
 
 router.delete('/:resourceId', 
+  protectRoute,
   authorizeRoles('admin'), 
   validate(resourceParamsSchema, 'params'),
   deleteResource

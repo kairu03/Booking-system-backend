@@ -5,6 +5,7 @@ import { createCategory, deleteCategory, getAllCategories, getCategoryById, upda
 import resourceRoutes from '../../modules/resources/resourceRoutes.js';
 import { validate } from "../../middlewares/validate.js";
 import { categoryParamsSchema, createCategorySchema, updateCategorySchema } from "./categoryValidation.js";
+import { getAllResourceByCategory } from "../resources/resourceController.js";
 
 const router = express.Router();
 
@@ -37,6 +38,6 @@ router.delete('/:categoryId',
   deleteCategory);
 
 // any route like /categories/:categoryId/resources will go to resourceRoutes
-router.use('/:categoryId/resources', resourceRoutes);
+router.get('/:categoryId/resources', getAllResourceByCategory);
 
-export default router;
+export default router; //dsdfsdfsf

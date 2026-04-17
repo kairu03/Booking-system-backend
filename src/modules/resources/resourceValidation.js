@@ -12,6 +12,12 @@ export const resourceParamsSchema = Joi.object({
 
 // for req.body - POST Resource
 export const createResourceSchema = Joi.object({
+  categoryId: Joi.string().hex().length(24).required().messages({
+    'string.base': 'CategoryId must be a valid ID',
+    'string.hex': 'CategoryId must be a valid hex string',
+    'string.length': 'CategoryId must be 24 characters long',
+    'any.required': 'CategoryId is required'
+  }),
   ...resourceFields,
   name: resourceFields.name.required().messages({
     'any.required': 'Resource name is required'

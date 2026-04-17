@@ -33,7 +33,7 @@ export const getResourceById = asyncHandler(async (req, res) => {
 
 // POST
 export const createResource = asyncHandler(async (req, res) => {
-  const { category } = req;
+  const { categoryId } = req.body;
 
   const { name, description, capacity, price, pricingType, amenities, images } = req.body;
 
@@ -45,7 +45,7 @@ export const createResource = asyncHandler(async (req, res) => {
     pricingType, 
     amenities, 
     images,
-    categoryId: category._id
+    categoryId
   });
   
   return res.status(201).json({

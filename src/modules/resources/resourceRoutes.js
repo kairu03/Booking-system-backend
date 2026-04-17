@@ -6,9 +6,7 @@ import { attachCategory } from "../../middlewares/attachCategory.js";
 import { validate } from "../../middlewares/validate.js";
 import { createResourceSchema, resourceParamsSchema, updateResourceSchema } from "./resourceValidation.js";
 
-const router = express.Router({ mergeParams: true });
-
-router.get('/', getAllResourceByCategory);
+const router = express.Router();
 
 router.get('/:resourceId',
   validate(resourceParamsSchema, 'params'),
@@ -18,7 +16,7 @@ router.get('/:resourceId',
 router.post('/', 
   protectRoute,
   authorizeRoles('admin'), 
-  attachCategory,
+  // attachCategory,
   validate(createResourceSchema),
   createResource
 );

@@ -8,7 +8,7 @@ export const getAllResourceByCategory = async (categoryId) => {
   const resources = await Resource.find({ category: categoryId, isActive: true })
 
   return resources;
-} 
+}
 
 
 // GET
@@ -25,7 +25,13 @@ export const getResourceById = async (resourceId) => {
 
 // POST
 export const createResource = async ({ name, description, capacity, price, pricingType, amenities, images, categoryId }) => {
-  
+
+  const category = await Category.findById(categoryId);
+
+  if (!category) {
+    throw new ApiError('Category not found', 404);
+  }
+
   const newResource = await Resource.create({
     name,
     description,
@@ -58,7 +64,7 @@ export const updateResource = async ({ resourceId, updated }) => {
   const updates = {
     ...(updated.name !== undefined && { name: updated.name }),
     ...(updated.description !== undefined && { description: updated.description }),
-    ...(updated.capacity !== undefined && { capacity: updated.capacity}),
+    ...(updated.capacity !== undefined && { capacity: updated.capacity }),
     ...(updated.price !== undefined && { price: updated.price }),
     ...(updated.pricingType !== undefined && { pricingType: updated.pricingType }),
     ...(updated.amenities !== undefined && { amenities: updated.amenities }),
@@ -66,8 +72,8 @@ export const updateResource = async ({ resourceId, updated }) => {
   }
 
   const updatedResource = await Resource.findByIdAndUpdate(
-    resourceId, 
-    updates, 
+    resourceId,
+    updates,
     { new: true, runValidators: true }
   );
 

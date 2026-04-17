@@ -9,6 +9,7 @@ import { logger } from "./config/logger.js";
 import authRoutes from './modules/auth/authRoutes.js';
 import categoryRoutes from './modules/categories/categoryRoutes.js';
 import bookingRoutes from './modules/bookings/bookingRoutes.js';
+import resourceRoutes from './modules/resources/resourceRoutes.js';
 import { errorHandler } from "./middlewares/errorHandler.js";
 import { globalLimiter } from "./middlewares/ratelimit/globalLimiter.js";
 import { corsOptions } from "./config/cors.js";
@@ -57,7 +58,8 @@ app.get('/', (req, res) => {
 
 app.use('/api/auth', authRoutes);
 app.use('/api/categories', categoryRoutes);
-app.use('/api/bookings', bookingRoutes)
+app.use('/api/resources', resourceRoutes);
+app.use('/api/bookings', bookingRoutes);
 
 app.use(errorHandler);
 

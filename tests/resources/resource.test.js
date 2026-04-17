@@ -81,7 +81,7 @@ describe('Resource routes', () => {
   });
 
 
-  describe('POST /api/categories/:categoryId/resources', () => { // POST 
+  describe('POST /api/resources', () => { // POST 
     it('should create resource sucessfully (admin) and return 201', async () => {
       const newResource = {
         name: "Conference Room A",
@@ -91,19 +91,21 @@ describe('Resource routes', () => {
         pricingType: "hourly",
         amenities: ["Projector", "Whiteboard", "WiFi", "Conference Phone"],
         images: ["https://example.com/conference-room.png"],
-        category: category._id
+        categoryId: category._id
       };
 
       const res = await request(app)
-        .post(`/api/categories/${category._id}/resources`)
+        .post(`/api/resources`)
         .set('Authorization', `Bearer ${token}`)
         .send(newResource)
 
       expect(res.statusCode).toBe(201);
       expect(res.body.success).toBe(true);
       expect(res.body.message).toBe('Resource Created Successfully');
+
+      const { categoryId, ...remaining } = newResource;
       expect(res.body.data).toMatchObject({
-        ...newResource,
+        ...remaining,
         category: category._id.toString()
       });
     });
@@ -111,7 +113,7 @@ describe('Resource routes', () => {
 
     it('should not allow non-admin to create resource and return 403', async () => {
       const res = await request(app)
-        .post(`/api/categories/${category._id}/resources`)
+        .post(`/api/resources`)
         .set('Authorization', `Bearer ${nonAdminToken}`)
         .send(nonAdminResource)
 
@@ -125,11 +127,11 @@ describe('Resource routes', () => {
         name: "Conference Room B",
         capacity: 20,
         price: 1500,
-        category: category._id
+        categoryId: category._id
       }
 
       const res = await request(app)
-        .post(`/api/categories/${category._id}/resources`)
+        .post(`/api/resources`)
         .set('Authorization', `Bearer ${token}`)
         .send(missingField)
 
@@ -154,10 +156,10 @@ describe('Resource routes', () => {
   }); // DESCRIBE GET ALL RESOURCE
 
 
-  describe('GET /api/categories/:categoryId/resources/:resourceId', () => { // GET BY ID
+  describe('GET /api/resources/:resourceId', () => { // GET BY ID
     it('should get resource by id successfully and return 200', async () => {
       const res = await request(app)
-        .get(`/api/categories/${category._id}/resources/${resource._id}`)
+        .get(`/api/resources/${resource._id}`)
         .set('Authorization', `Bearer ${token}`)
 
       expect(res.statusCode).toBe(200);
@@ -168,7 +170,7 @@ describe('Resource routes', () => {
 
     it('should fail with invalid resource id and return 400', async () => {
       const res = await request(app)
-        .get(`/api/categories/${category._id}/resources/76ausdh`)
+        .get(`/api/resources/76ausdh`)
         .set('Authorization', `Bearer ${token}`)
 
       expect(res.statusCode).toBe(400);
@@ -177,10 +179,10 @@ describe('Resource routes', () => {
   }); // DESCRIBE GET BY ID
 
 
-  describe('PATCH /api/categories/:categoryId/resources/:resourceId', () => { // PATCH 
+  describe('PATCH /api/resources/:resourceId', () => { // PATCH 
     it('should update resource successfully and return 200', async () => {
       const res = await request(app)
-        .patch(`/api/categories/${category._id}/resources/${resource._id}`)
+        .patch(`/api/resources/${resource._id}`)
         .set('Authorization', `Bearer ${token}`)
         .send({ price: 15000, })
 
@@ -193,7 +195,7 @@ describe('Resource routes', () => {
 
     it('should not allow non-admin to update resource and return 403', async () => {
       const res = await request(app)
-      .patch(`/api/categories/${category._id}/resources/${resource._id}`)
+      .patch(`/api/resources/${resource._id}`)
       .set('Authorization', `Bearer ${nonAdminToken}`)
       .send({ capacity: 50 })
 
@@ -204,7 +206,7 @@ describe('Resource routes', () => {
 
     it('should fail with invalid resource id and return 400', async () => {
       const res = await request(app)
-      .patch(`/api/categories/${category._id}/resources/324asd`)
+      .patch(`/api/resources/324asd`)
       .set('Authorization', `Bearer ${token}`)
 
       expect(res.statusCode).toBe(400);
@@ -213,10 +215,10 @@ describe('Resource routes', () => {
   }) // DESCRIBE PATCH RESOURCE
 
 
-  describe('DELETE /api/categories/:categoryId/resources/:resourceId', () => { // DELETE
+  describe('DELETE /api/resources/:resourceId', () => { // DELETE
     it('should delete resource successfully and return 200', async () => {
       const res = await request(app)
-      .delete(`/api/categories/${category._id}/resources/${resource._id}`)
+      .delete(`/api/resources/${resource._id}`)
       .set('Authorization', `Bearer ${token}`)
 
       expect(res.statusCode).toBe(200);
@@ -231,7 +233,7 @@ describe('Resource routes', () => {
 
     it('should not allow non-admin to delete resource and return 403', async () => {
       const res = await request(app)
-      .delete(`/api/categories/${category._id}/resources/${resource._id}`)
+      .delete(`/api/resources/${resource._id}`)
       .set('Authorization', `Bearer ${nonAdminToken}`)
 
       expect(res.statusCode).toBe(403);
@@ -241,7 +243,7 @@ describe('Resource routes', () => {
 
     it('should fail with invalid resource id and return 400', async () => {
       const res = await request(app)
-      .delete(`/api/categories/${category._id}/resources/asdawe23`)
+      .delete(`/api/resources/asdawe23`)
       .set('Authorization', `Bearer ${token}`)
 
       expect(res.statusCode).toBe(400);

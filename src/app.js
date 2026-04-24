@@ -58,7 +58,7 @@ app.get('/', (req, res) => {
   res.send('Booking system api is running');
 });
 // healht check
-app.get('/health', async (req, res) => {
+app.get('/health', (req, res) => {
   res.status(200).json({
     status: 'ok',
     uptime: process.uptime(),

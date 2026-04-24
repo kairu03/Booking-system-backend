@@ -6,11 +6,6 @@ import { loginLimiter, registerLimiter } from '../../middlewares/ratelimit/authL
 
 const router = express.Router()
 
-// if (process.env.NODE_ENV !== 'test') {
-//   router.use('/login', loginLimiter)
-//   router.use('/register', registerLimiter)
-// }
-
 router.post('/login', loginLimiter, validate(loginSchema), userLogin);
 router.post('/register', registerLimiter, validate(registerSchema), userRegister);
 

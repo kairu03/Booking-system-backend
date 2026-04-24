@@ -1,7 +1,5 @@
 import { createLimiter } from "./createLimiter.js";
 
-
-// limits each user per network
 export const loginLimiter = createLimiter(
   `booking:login`,
   3,
@@ -10,7 +8,6 @@ export const loginLimiter = createLimiter(
 );
 
 
-// limits per network
 export const registerLimiter = createLimiter(
   'booking:register',
   5,

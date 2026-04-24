@@ -39,7 +39,7 @@ export const categorySchema = new mongoose.Schema({
 
 categorySchema.index({ isActive: 1 });
 
-// to auto generate slug from name before saving in DB, if name is new
+// auto generate slug from name before saving in DB, if name is new
 categorySchema.pre('save', function () {
   if (this.isModified('name')) 
   this.slug = slugify(this.name, { lower: true, strict: true });

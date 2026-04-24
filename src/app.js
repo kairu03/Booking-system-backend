@@ -57,6 +57,14 @@ if (process.env.NODE_ENV !== 'test') {
 app.get('/', (req, res) => {
   res.send('Booking system api is running');
 });
+// healht check
+app.get('/health', async (req, res) => {
+  res.status(200).json({
+    status: 'ok',
+    uptime: process.uptime(),
+    timestamp: Date.now()
+  });
+});
 
 app.use('/api/auth', authRoutes);
 app.use('/api/categories', categoryRoutes);

@@ -2,7 +2,6 @@
 import Joi from "joi";
 import { objectId } from "../common/validators/objectId.js";
 
-
 // for req.params
 export const bookingParamsSchema = Joi.object({
   bookingId: objectId.required().messages({

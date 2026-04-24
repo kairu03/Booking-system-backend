@@ -1,4 +1,4 @@
-# 📌 Booking System Backend
+# 📌 Booking System Backend API
 
 [![Backend CI](https://github.com/kairu03/Booking-system-backend/actions/workflows/ci-backend.yml/badge.svg?branch=main&event=push)](https://github.com/kairu03/Booking-system-backend/actions/workflows/ci-backend.yml)
 
@@ -146,7 +146,7 @@ Automated tests run using an in-memory database to ensure isolation from develop
 ---
 
 ## ✨ Features
-- 🔐 JWT-based Authentication (Register & Login)
+- 🔐 JWT Authentication & Authorization (Register, Login, Protected Routes)
 - 🛡 Role-Based Authorization (Admin & User Access Control)
 - 📅 Booking System with Overlap Prevention Logic
 - 🏢 Category & Resource Management (Admin-controlled)

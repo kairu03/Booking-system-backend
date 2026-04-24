@@ -1,4 +1,3 @@
-
 const allowedOrigins = process.env.ENV_NODE === 'production'
   ? ['http://myfrontend.com'] // frontend domain
   : ['http://localhost:5173'] // frontend react vite

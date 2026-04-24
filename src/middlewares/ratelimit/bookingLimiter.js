@@ -5,7 +5,6 @@ export const createBookingLimiter = createLimiter(
   5,
   60 * 15,
   'Too many booking attempts, try again later',
-  { useUserId: true },
 );
 
 export const updateBookingLimiter = createLimiter(
@@ -13,7 +12,6 @@ export const updateBookingLimiter = createLimiter(
   5,
   60 * 15,
   'Too many booking updates, try again later',
-  { useUserId: true },
 );
 
 export const cancelBookingLimiter = createLimiter(

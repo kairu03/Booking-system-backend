@@ -5,5 +5,4 @@ export const globalLimiter = createLimiter(
   100,
   60,
   'Too many requests, please slow down',
-  { useIp: true },
 );

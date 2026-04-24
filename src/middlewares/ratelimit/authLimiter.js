@@ -7,7 +7,6 @@ export const loginLimiter = createLimiter(
   3,
   60 * 15,
   'Too many login attempts, try again later',
-  { useUserId: true, useIp: true}, // track by userId + ip
 );
 
 
@@ -17,5 +16,4 @@ export const registerLimiter = createLimiter(
   5,
   60 * 15,
   'Too many register attempts, try again later',
-  { useIp: true }, // track by ip
 );

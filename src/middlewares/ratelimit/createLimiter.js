@@ -1,28 +1,35 @@
-import { request } from "express";
 import { asyncHandler } from "../../utils/asyncHandler.js";
 import { getRedis } from "../../config/redis.js";
 
-export const createLimiter = (prefix, maxRequests, windowSeconds, message, options = {}) => {
+export const testStore = new Map();
+
+export const createLimiter = (prefix, maxRequests, windowSeconds, message) => {
   return asyncHandler(async (req, res, next) => {
 
-    // lazy execution, use the Redis client that getRedis() created
-    const redis = getRedis();
+    const isTest = process.env.NODE_ENV === "test";
 
-    const userId = req.user?.id;
-    const ip = req.ip;
+    const testId = req.headers["x-test-id"];
+    const identity = isTest
+      ? (testId || "test-global")
+      : (req.user?.id || req.ip)
 
-    // build Redis key based on options 
-    const key =
-      options.useUserId && options.useIp ? `${prefix}:${userId || ip}:${ip}`
-        : options.userId ? `${prefix}:${userId || ip}`
-          : options.useIp ? `${prefix}:${ip}`
-            : prefix;
+    const key = `${prefix}:${identity}`;
 
-    // requests count in redis
-    const requests = await redis.incr(key);
+    const store = isTest ? testStore : null;
+    const redis = isTest ? null : getRedis();
 
-    if (requests === 1) {
-      await redis.expire(key, windowSeconds);
+    let requests;
+
+    if (isTest) {
+      const current = store.get(key) || 0;
+      requests = current + 1;
+      store.set(key, requests);
+    } else {
+      requests = await redis.incr(key);
+
+      if (requests === 1) {
+        await redis.expire(key, windowSeconds);
+      }
     }
 
     if (requests > maxRequests) {

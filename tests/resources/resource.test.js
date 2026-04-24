@@ -1,5 +1,3 @@
-import { connectDB } from "../../src/config/db.js";
-import mongoose from "mongoose";
 import request from 'supertest';
 import app from "../../src/app.js";
 import User from "../../src/modules/users/userModel.js";
@@ -12,8 +10,6 @@ describe('Resource routes', () => {
   let user, token, category, resource, nonAdminUser, nonAdminToken, nonAdminResource;
 
   beforeAll(async () => {
-    await connectDB();
-
     user = await User.create({
       name: 'usermain',
       email: `usermain${Date.now()}@gmail.com`,
@@ -70,14 +66,6 @@ describe('Resource routes', () => {
       images: ["https://example.com/conference-room.png"],
       category: category._id
     };
-  });
-
-  afterEach(async () => {
-    await Category.deleteMany();
-  });
-
-  afterAll(async () => {
-    await mongoose.connection.close();
   });
 
 
@@ -186,18 +174,18 @@ describe('Resource routes', () => {
         .set('Authorization', `Bearer ${token}`)
         .send({ price: 15000, })
 
-        expect(res.statusCode).toBe(200);
-        expect(res.body.success).toBe(true)
-        expect(res.body.message).toBe('Resource Updated Successfully');
-        expect(res.body.data.price).toBe(15000);
+      expect(res.statusCode).toBe(200);
+      expect(res.body.success).toBe(true)
+      expect(res.body.message).toBe('Resource Updated Successfully');
+      expect(res.body.data.price).toBe(15000);
     });
 
 
     it('should not allow non-admin to update resource and return 403', async () => {
       const res = await request(app)
-      .patch(`/api/resources/${resource._id}`)
-      .set('Authorization', `Bearer ${nonAdminToken}`)
-      .send({ capacity: 50 })
+        .patch(`/api/resources/${resource._id}`)
+        .set('Authorization', `Bearer ${nonAdminToken}`)
+        .send({ capacity: 50 })
 
       expect(res.statusCode).toBe(403);
       expect(res.body.message).toBe('You do not have permission to access this resource');
@@ -206,8 +194,8 @@ describe('Resource routes', () => {
 
     it('should fail with invalid resource id and return 400', async () => {
       const res = await request(app)
-      .patch(`/api/resources/324asd`)
-      .set('Authorization', `Bearer ${token}`)
+        .patch(`/api/resources/324asd`)
+        .set('Authorization', `Bearer ${token}`)
 
       expect(res.statusCode).toBe(400);
       expect(res.body.message).toBe('Invalid Id');
@@ -218,8 +206,8 @@ describe('Resource routes', () => {
   describe('DELETE /api/resources/:resourceId', () => { // DELETE
     it('should delete resource successfully and return 200', async () => {
       const res = await request(app)
-      .delete(`/api/resources/${resource._id}`)
-      .set('Authorization', `Bearer ${token}`)
+        .delete(`/api/resources/${resource._id}`)
+        .set('Authorization', `Bearer ${token}`)
 
       expect(res.statusCode).toBe(200);
       expect(res.body.success).toBe(true);
@@ -233,8 +221,8 @@ describe('Resource routes', () => {
 
     it('should not allow non-admin to delete resource and return 403', async () => {
       const res = await request(app)
-      .delete(`/api/resources/${resource._id}`)
-      .set('Authorization', `Bearer ${nonAdminToken}`)
+        .delete(`/api/resources/${resource._id}`)
+        .set('Authorization', `Bearer ${nonAdminToken}`)
 
       expect(res.statusCode).toBe(403);
       expect(res.body.message).toBe('You do not have permission to access this resource');
@@ -243,8 +231,8 @@ describe('Resource routes', () => {
 
     it('should fail with invalid resource id and return 400', async () => {
       const res = await request(app)
-      .delete(`/api/resources/asdawe23`)
-      .set('Authorization', `Bearer ${token}`)
+        .delete(`/api/resources/asdawe23`)
+        .set('Authorization', `Bearer ${token}`)
 
       expect(res.statusCode).toBe(400);
       expect(res.body.message).toBe('Invalid Id');

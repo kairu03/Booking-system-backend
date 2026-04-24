@@ -1,8 +1,14 @@
 import { Redis } from "@upstash/redis";
 
-// lazy initialization, creates new Redis client using env variables when getRedis() is called
-export const getRedis = () => new Redis({
-  url: process.env.UPSTASH_REDIS_REST_URL,
-  token: process.env.UPSTASH_REDIS_REST_TOKEN
-});
+let redis;
 
+export const getRedis = () => {
+  if (!redis) {
+    redis = new Redis({
+      url: process.env.UPSTASH_REDIS_REST_URL,
+      token: process.env.UPSTASH_REDIS_REST_TOKEN
+    });
+  }
+
+  return redis;
+};

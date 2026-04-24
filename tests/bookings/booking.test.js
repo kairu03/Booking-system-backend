@@ -1,4 +1,3 @@
-import { connectDB } from "../../src/config/db.js";
 import mongoose from "mongoose";
 import request from 'supertest';
 import app from "../../src/app.js";
@@ -15,8 +14,6 @@ describe('Booking routes', () => {
   let user, token, category, resource, newBooking, booking, nonAdminUser, nonAdminToken;
 
   beforeAll(async () => {
-    await connectDB();
-
     user = await User.create({
       name: 'usermain1',
       email: `usermain1${Date.now()}@gmail.com`,
@@ -42,7 +39,7 @@ describe('Booking routes', () => {
       process.env.JWT_SECRET,
       { expiresIn: '1d' }
     );
-  });
+  })
 
   beforeEach(async () => {
     await clearRatelimitKeys();
@@ -79,16 +76,9 @@ describe('Booking routes', () => {
     });
   });
 
-  afterEach(async () => {
-    await Category.deleteMany();
-    await Resource.deleteMany();
-    await Booking.deleteMany();
-    await clearRatelimitKeys();
-  });
-
-  afterAll(async () => {
-    await mongoose.connection.close();
-  });
+  // afterEach(async () => {
+  //   await clearRatelimitKeys();
+  // });
 
 
   describe('POST /api/bookings', () => { // POST BOOKINGS (admin)
@@ -225,20 +215,26 @@ describe('Booking routes', () => {
 
 
     it('should block requests exceeding the rate limit and return 429', async () => {
+      const ratelimitBooking = {
+        resourceId: resource._id.toString(),
+        startDate: '2026-07-07T10:00:00.000Z',
+        endDate: '2026-07-07T12:00:00.000Z'
+      }
+      
       for (let i = 1; i <= 5; i++) {
         await request(app)
-        .post('/api/bookings')
-        .set('Authorization', `Bearer ${token}`)
-        .send(newBooking)
-        }
+          .post('/api/bookings')
+          .set('Authorization', `Bearer ${nonAdminToken}`)
+          .send(ratelimitBooking)
+      }
 
-        const res = await request(app)
+      const res = await request(app)
         .post('/api/bookings')
-        .set('Authorization', `Bearer ${token}`)
-        .send(newBooking)
+        .set('Authorization', `Bearer ${nonAdminToken}`)
+        .send(ratelimitBooking)
 
-        expect(res.statusCode).toBe(429);
-        expect(res.body.message).toBe('Too many booking attempts, try again later');
+      expect(res.statusCode).toBe(429);
+      expect(res.body.message).toBe('Too many booking attempts, try again later');
     });
   }); // DESCRIBE POST BOOKING
 
@@ -358,8 +354,8 @@ describe('Booking routes', () => {
       );
 
       const res = await request(app)
-      .delete(`/api/bookings/${booking._id}`)
-      .set('Authorization', `Bearer ${userBToken}`)
+        .delete(`/api/bookings/${booking._id}`)
+        .set('Authorization', `Bearer ${userBToken}`)
 
       expect(res.statusCode).toBe(403);
       expect(res.body.message).toBe('Not authorized');
@@ -368,8 +364,8 @@ describe('Booking routes', () => {
 
     it('should allow admin to cancel users booking and return 200', async () => {
       const res = await request(app)
-      .delete(`/api/bookings/${booking._id}`)
-      .set('Authorization', `Bearer ${token}`)
+        .delete(`/api/bookings/${booking._id}`)
+        .set('Authorization', `Bearer ${token}`)
 
       expect(res.statusCode).toBe(200);
       expect(res.body.success).toBe(true);

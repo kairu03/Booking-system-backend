@@ -5,6 +5,7 @@
 A scalable RESTful Booking System API built with **Node.js, Express, MongoDB, and JWT authentication**, engineered for real-world performance, security, and maintainability.
 
 Implements production-grade backend practices including role-based access control, modular service architecture, centralized error handling, robust request validation, rate limiting, and automated testing with parallel execution to optimize test performance, alongside CI/CD pipelines for continuous integration and deployment.
+
 ---
 
 ## 🌐 Live Demo
@@ -192,6 +193,15 @@ Consistent Error Response Format:
 | POST   | /api/auth/register | Register new user        | Public |
 | POST   | /api/auth/login    | Login user & get token   | Public |
 
+### 📂 Category Routes
+| Method | Endpoint                              | Description                   | Access      |
+|--------|---------------------------------------|-------------------------------|-------------|
+| GET    | /api/categories                       | Get all categories            | Public/Auth |
+| GET    | /api/categories/:id                   | Get category by ID            | Public/Auth |
+| POST   | /api/categories                       | Create category               | Admin       |
+| PATCH  | /api/categories/:id                   | Update category               | Admin       |
+| DELETE | /api/categories/:id                   | Delete category               | Admin       |
+| GET    | /api/categories/:categoryId/resources | Get all resources by category | Public/Auth |
 ---
 
 ## 🔧 Installation & Setup

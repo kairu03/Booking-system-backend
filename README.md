@@ -70,6 +70,7 @@ booking-system-backend/
 
 ## 🔑 Authentication Flow
 
+0. All protected routes require authentication via JWT.
 1. User registers with name, email, and password.
 2. Password is securely hashed using bcrypt before being stored in the database.
 3. Upon successful login, the server generates a signed JWT containing the user ID and role.
@@ -194,14 +195,32 @@ Consistent Error Response Format:
 | POST   | /api/auth/login    | Login user & get token   | Public |
 
 ### 📂 Category Routes
-| Method | Endpoint                              | Description                   | Access      |
-|--------|---------------------------------------|-------------------------------|-------------|
-| GET    | /api/categories                       | Get all categories            | Public/Auth |
-| GET    | /api/categories/:id                   | Get category by ID            | Public/Auth |
-| POST   | /api/categories                       | Create category               | Admin       |
-| PATCH  | /api/categories/:id                   | Update category               | Admin       |
-| DELETE | /api/categories/:id                   | Delete category               | Admin       |
-| GET    | /api/categories/:categoryId/resources | Get all resources by category | Public/Auth |
+| Method | Endpoint                              | Description                   | Access |
+|--------|---------------------------------------|-------------------------------|--------|
+| GET    | /api/categories                       | Get all categories            | Public |
+| GET    | /api/categories/:categoryId           | Get category by ID            | Public |
+| POST   | /api/categories                       | Create category               | Admin  |
+| PATCH  | /api/categories/:categoryId           | Update category               | Admin  |
+| DELETE | /api/categories/:categoryId           | Delete category               | Admin  |
+| GET    | /api/categories/:categoryId/resources | Get all resource by category  | Public |
+
+### 🏢 Resource Routes
+| Method | Endpoint                              | Description                   | Access |
+|--------|---------------------------------------|-------------------------------|--------|
+| GET    | /api/resources/:resourceId            | Get resource by ID            | Public |
+| POST   | /api/resources                        | Create resource               | Admin  |
+| PATCH  | /api/resources/:resourceId            | Update resource               | Admin  |
+| DELETE | /api/resources/:resourceId            | Delete resource               | Admin  |
+
+### 📅 Booking Routes
+| Method | Endpoint                              | Description                   | Access     |
+|--------|---------------------------------------|-------------------------------|------------|
+| GET    | /api/bookings                         | Get user bookings             | User       |
+| GET    | /api/bookings/admin                   | Get all bookings              | Admin      |
+| POST   | /api/bookings                         | Create booking                | User/Admin |
+| PATCH  | /api/bookings/:bookingId              | Update booking status         | Admin      |
+| DELETE | /api/bookings/:bookingId              | Cancel booking                | User/Admin |
+
 ---
 
 ## 🔧 Installation & Setup

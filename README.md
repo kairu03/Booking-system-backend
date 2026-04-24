@@ -194,13 +194,14 @@ Consistent Error Response Format:
 | POST   | /api/auth/login    | Login user & get token   | Public |
 
 ### 📂 Category Routes
-| Method | Endpoint                 | Description          | Access       |
-|--------|--------------------------|----------------------|--------------|
-| POST   | /api/categories          | Create category      | Admin        |
-| GET    | /api/categories          | Get all categories   | Public/Auth  |
-| GET    | /api/categories/:id      | Get category by ID   | Public/Auth  |
-| PATCH  | /api/categories/:id      | Update category      | Admin        |
-| DELETE | /api/categories/:id      | Delete category      | Admin        |
+| Method | Endpoint                              | Description                   | Access      |
+|--------|---------------------------------------|-------------------------------|-------------|
+| GET    | /api/categories                       | Get all categories            | Public/Auth |
+| GET    | /api/categories/:id                   | Get category by ID            | Public/Auth |
+| POST   | /api/categories                       | Create category               | Admin       |
+| PATCH  | /api/categories/:id                   | Update category               | Admin       |
+| DELETE | /api/categories/:id                   | Delete category               | Admin       |
+| GET    | /api/categories/:categoryId/resources | Get all resources by category | Public/Auth |
 ---
 
 ## 🔧 Installation & Setup

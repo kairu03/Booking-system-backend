@@ -1,21 +1,11 @@
-import { connectDB } from "../../src/config/db.js";
-import mongoose from "mongoose";
 import request from 'supertest';
 import app from "../../src/app.js";
 import User from "../../src/modules/users/userModel.js";
 import { clearRatelimitKeys } from "../../src/utils/clearRatelimitKeys.js";
 
-beforeAll(async () => {
-  await connectDB();
-})
-
 afterEach(async () => {
   await User.deleteMany();
   await clearRatelimitKeys();
-})
-
-afterAll(async () => {
-  await mongoose.connection.close();
 })
 
 
@@ -107,21 +97,25 @@ describe('POST /api/auth/register', () => {
 
 
   it('should block requests exceeding the rate limit and return 429', async () => {
+    const TEST_ID = 'register-rate-test';
+
     for (let i = 1; i <= 5; i++) {
       await request(app)
         .post('/api/auth/register')
+        .set('x-test-id', TEST_ID)
         .send({
           name: 'testregister6',
-          email: 'test6@gmail.com',
+          email: `register-test@example.com`,
           password: 'Testpassword6'
         })
     }
 
     const res = await request(app)
       .post('/api/auth/register')
+      .set('x-test-id', TEST_ID)
       .send({
         name: 'testregister6',
-        email: 'test6@gmail.com',
+        email: `register-test@example.com`,
         password: 'Testpassword6'
       })
 

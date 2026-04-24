@@ -43,13 +43,15 @@ app.use(
 )
 
 // sanitize requests to prevent MongoDB injection
-app.use(mongoSanitize({ replaceWith: '_'}));
+app.use(mongoSanitize({ replaceWith: '_' }));
 
 // enable trusting proxy headers for proper IP tracking (required for rate limiting)
 app.set('trust proxy', 1);
 
-// global limiter
-app.use(globalLimiter);
+// disable global limiter in test env
+if (process.env.NODE_ENV !== 'test') {
+  app.use(globalLimiter);
+}
 
 // test route
 app.get('/', (req, res) => {

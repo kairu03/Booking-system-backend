@@ -1,16 +1,10 @@
-import { connectDB } from "../../src/config/db.js";
-import mongoose from "mongoose";
 import request from 'supertest';
 import app from "../../src/app.js";
 import User from "../../src/modules/users/userModel.js";
 import { clearRatelimitKeys } from "../../src/utils/clearRatelimitKeys.js";
 
-beforeAll(async () => {
-  await connectDB();
-})
-
 beforeEach(async () => {
-  await User.deleteMany();
+
   email = `testlogin${Date.now()}@gmail.com`
   await User.create({
     name: 'testlogin',
@@ -21,11 +15,9 @@ beforeEach(async () => {
 
 afterEach(async () => {
   await clearRatelimitKeys();
+  await User.deleteMany();
 })
 
-afterAll(async () => {
-  await mongoose.connection.close();
-})
 
 // LOGIN
 describe('POST /api/auth/login', () => {
@@ -100,20 +92,31 @@ describe('POST /api/auth/login', () => {
 
 
   it('should block requests exceeding the rate limit and return 429', async () => {
+    const email = `loginuser@test.com`;
+
+    await User.create({
+      name: 'userlimit',
+      email,
+      password: 'userpassword'
+    });
+    const TEST_ID = 'login-rate-test';
+
     for (let i = 1; i <= 3; i++) {
       await request(app)
         .post('/api/auth/login')
+        .set('x-test-id', TEST_ID)
         .send({
           email,
-          password: 'Testpassword'
+          password: 'userpassword'
         })
     }
 
     const res = await request(app)
       .post('/api/auth/login')
+      .set('x-test-id', TEST_ID)
       .send({
         email,
-        password: 'Testpassword'
+        password: 'userpassword'
       })
 
     expect(res.statusCode).toBe(429);

@@ -31,7 +31,7 @@ router.patch('/:bookingId',
 
 router.delete('/:bookingId', 
   cancelBookingLimiter,
-  validate(bookingParamsSchema),
+  validate(bookingParamsSchema, 'params'),
   cancelBooking
 );
 

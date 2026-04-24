@@ -1,5 +1,3 @@
-import { connectDB } from "../../src/config/db.js";
-import mongoose from "mongoose";
 import request from 'supertest';
 import app from "../../src/app.js";
 import User from "../../src/modules/users/userModel.js";
@@ -12,8 +10,6 @@ describe('Category Routes', () => {
   let user, token, category, nonAdminUser, nonAdminToken;
 
   beforeAll(async () => {
-    await connectDB();
-
     user = await User.create({
       name: 'test1',
       email: `testcategory${Date.now()}@gmail.com`,
@@ -39,7 +35,7 @@ describe('Category Routes', () => {
       process.env.JWT_SECRET,
       { expiresIn: '1d' }
     );
-  });
+  })
 
   beforeEach(async () => {
     category = await Category.create({
@@ -48,14 +44,6 @@ describe('Category Routes', () => {
       image: 'http://example.com/test.jpg',
       user: user._id
     });
-  });
-
-  afterEach(async () => {
-    await Category.deleteMany();
-  });
-
-  afterAll(async () => {
-    await mongoose.connection.close();
   });
 
 
@@ -188,7 +176,7 @@ describe('Category Routes', () => {
   }); // DESCRIBE GET BY ID
 
 
-  describe('PATCH /api/categories/:categoryId', () => {
+  describe('PATCH /api/categories/:categoryId', () => { // PATCH
     it('should update category successfully and return 200', async () => {
       const res = await request(app)
         .patch(`/api/categories/${category._id}`)
@@ -230,7 +218,7 @@ describe('Category Routes', () => {
   }); // DESCRIBE PATCH
 
 
-  describe('DELETE /api/categories/:categoryId', () => {
+  describe('DELETE /api/categories/:categoryId', () => { // DELETE
     it('should delete category successfully and return 200', async () => {
       const res = await request(app)
         .delete(`/api/categories/${category._id}`)

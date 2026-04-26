@@ -3,7 +3,6 @@ import mongoose from 'mongoose';
 import Category from '../../src/modules/categories/categoryModel.js';
 import Resource from '../../src/modules/resources/resourceModel.js';
 import Booking from '../../src/modules/bookings/bookingModel.js';
-import { getRedis } from '../../src/config/redis.js';
 import { testStore } from '../../src/middlewares/ratelimit/createLimiter.js';
 
 let mongo;
@@ -14,7 +13,6 @@ beforeAll(async () => {
 });
 
 beforeEach(async () => {
-  await getRedis().flushall();
   testStore.clear();
 });
 
